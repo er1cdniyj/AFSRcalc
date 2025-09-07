@@ -1,1 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Fighting Simulator Reborn Calculators</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #FF7B25;
+      --primary-light: #FF9E58;
+      --primary-dark: #E56A1A;
+      --primary-glow: rgba(255, 123, 37, 0.4);
+      --secondary: #3A86FF;
+      --secondary-light: #6BA1FF;
+      --accent: #FF4D29;
+      --bg-dark: #1A1A24;
+      --bg-card: #252536;
+      --bg-element: #2F2F45;
+      --border: #4A4A68;
+      --text-main: #F0F0F0;
+      --text-secondary: #B8B8C8;
+      --success: #36D973;
+      --error: #FF5252;
+      --warning: #FFB347;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #14141E 0%, #23233A 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    .bg-anime {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(255, 123, 37, 0.3) 0%, transparent 20%),
+        radial-gradient(circle at 90% 70%, rgba(58, 134, 255, 0.3) 0%, transparent 20%);
+      animation: pulseBackground 15s ease infinite;
+    }
+    
+    @keyframes pulseBackground {
+      0%, 100% { opacity: 0.08; }
+      50% { opacity: 0.15; }
+    }
+    
+    .bg-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.1;
+      animation: float linear infinite;
+    }
+    
+    @keyframes float {
+      to { transform: translateY(-100vh) translateX(20vw); }
+    }
+    
+    .header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      box-shadow: 0 0 20px var(--primary-glow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .logo::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0)
+      );
+      transform: rotate(30deg);
+    }
+    
+    .logo i {
+      font-size: 1.8rem;
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    
+    .title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(255, 123, 37, 0.3);
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      text-align: center;
+      max-width: 600px;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    
+    .navbar {
+      display: flex;
+      background: var(--bg-card);
+      padding: 0.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .nav-btn {
+      padding: 0.8rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 123, 37, 0.4);
+    }
+    
+    .nav-btn:hover:not(.active) {
+      background: rgba(255, 123, 37, 0.1);
+      color: var(--primary-light);
+    }
+    
+    .main-container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .calculator-container {
+      background: linear-gradient(to bottom, rgba(37, 37, 54, 0.95), rgba(37, 37, 54, 0.85));
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+    
+    .calculator-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    
+    .calculator-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .calculator-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .form-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .form-input, .form-select {
+      background: var(--bg-element);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.8rem 1rem;
+      color: var(--text-main);
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 123, 37, 0.3);
+    }
+    
+    .checkbox-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    
+    .checkbox-input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+    
+    .section {
+      background: rgba(47, 47, 69, 0.5);
+      padding: 1.2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(74, 74, 104, 0.3);
+    }
+    
+    .section-title {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--secondary-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 123, 37, 0.4);
+    }
+    
+    .profile-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .profile-input {
+      flex-grow: 1;
+      background: var(--bg-element);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.6rem 1rem;
+      color: var(--text-main);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+    }
+    
+    .profile-btn {
+      background: var(--bg-element);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .profile-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .result {
+      margin-top: 2rem;
+      background: rgba(47, 47, 69, 0.7);
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+    
+    .result-item {
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .result-label {
+      color: var(--text-secondary);
+    }
+    
+    .result-value {
+      font-weight: 600;
+      color: var(--primary-light);
+    }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      color: var(--bg-dark);
+      border-radius: 50%;
+      text-align: center;
+      font-size: 11px;
+      line-height: 16px;
+      cursor: help;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: var(--bg-element);
+      color: var(--text-main);
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .tab-content {
+      display: none;
+      width: 100%;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    .tab-content.active {
+      display: flex;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .ranks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .rank-item {
+      background: var(--bg-element);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    
+    .rank-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .rank-name {
+      font-weight: 600;
+      color: var(--primary-light);
+    }
+    
+    .rank-value {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <div class="bg-anime"></div>
+  <div class="bg-particles" id="particles"></div>
 
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo">
+        <i class="fas fa-fist-raised"></i>
+      </div>
+      <h1 class="title">AFS Reborn Calculators</h1>
+    </div>
+    <p class="subtitle">Optimize your progress in Anime Fighting Simulator Reborn with these powerful calculators</p>
+    
+    <div class="navbar">
+      <button class="nav-btn active" data-tab="stats-calc">
+        <i class="fas fa-chart-line"></i> Stats Calculator
+      </button>
+      <button class="nav-btn" data-tab="coin-calc">
+        <i class="fas fa-coins"></i> Coin Calculator
+      </button>
+    </div>
+  </div>
+
+  <div class="main-container">
+    
+    <div class="tab-content active" id="stats-calc">
+      <div class="calculator-container">
+        <h2 class="calculator-title"><i class="fas fa-chart-line"></i> Stats Gain Calculator</h2>
+        <p class="calculator-subtitle">Calculate your training gains in AFS Reborn</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="statType" class="form-label">Training Type
+              <div class="tooltip">?<span class="tooltiptext">Select the stat you're training (Strength, Speed, Defense, etc.)</span></div>
+            </label>
+            <select id="statType" class="form-select">
+              <option value="strength">Strength</option>
+              <option value="defense">Defense</option>
+              <option value="chakra">Chakra</option>
+              <option value="sword">Sword</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="gainPerTick" class="form-label">Gain Per Second
+              <div class="tooltip">?<span class="tooltiptext">Amount gained each second (e.g. 1.5K or 1500)</span></div>
+            </label>
+            <input type="text" id="gainPerTick" class="form-input" placeholder="e.g. 1.5K or 1500" required>
+          </div>
+          <div class="form-group">
+            <label for="time" class="form-label">Time (minutes)
+              <div class="tooltip">?<span class="tooltiptext">Duration of your training session in minutes</span></div>
+            </label>
+            <input type="number" id="time" class="form-input" placeholder="e.g. 60" required>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title"><i class="fas fa-robot"></i> Boosts & Multipliers</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="multiplier" class="form-label">Multiplier
+                <div class="tooltip">?<span class="tooltiptext">Your current training multiplier (default is 1x)</span></div>
+              </label>
+              <input type="number" id="multiplier" class="form-input" placeholder="e.g. 2.5" value="1" step="0.1" min="1">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn" id="calculateBtn"><i class="fas fa-calculator"></i> Calculate Gains</button>
+        
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+
+    
+    <div class="tab-content" id="coin-calc">
+      <div class="calculator-container">
+        <h2 class="calculator-title"><i class="fas fa-coins"></i> Coin Calculator</h2>
+        <p class="calculator-subtitle">Calculate your coin earnings based on rank and bonuses</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="rankSelect" class="form-label">Select Rank</label>
+            <select id="rankSelect" class="form-select">
+              <option value="0">Fighter</option>
+              <option value="1">Shinobi</option>
+              <option value="2">Pirate</option>
+              <option value="3">Ghoul</option>
+              <option value="4">Hero</option>
+              <option value="5">Reaper</option>
+              <option value="6">Saiyan</option>
+              <option value="7">Sin</option>
+              <option value="8">Magi</option>
+              <option value="9">Akuma</option>
+              <option value="10">Yonko</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="coinTimeInput" class="form-label">Time (minutes)
+              <div class="tooltip">?<span class="tooltiptext">Duration of coin earning in minutes</span></div>
+            </label>
+            <input type="number" id="coinTimeInput" class="form-input" placeholder="e.g. 60" required>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title"><i class="fas fa-gem"></i> Bonuses</h3>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="doubleCoins" class="checkbox-input">
+              2x Coins Gamepass
+            </label>
+          </div>
+        </div>
+
+        <button class="btn" id="calculateCoinsBtn"><i class="fas fa-coins"></i> Calculate Earnings</button>
+        
+        <div class="result" id="coinResult"></div>
+
+        <div class="section">
+          <h3 class="section-title"><i class="fas fa-list"></i> Rank Values</h3>
+          <div class="ranks-grid">
+            <div class="rank-item">
+              <div class="rank-name">Fighter</div>
+              <div class="rank-value">5 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Shinobi</div>
+              <div class="rank-value">10 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Pirate</div>
+              <div class="rank-value">25 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Ghoul</div>
+              <div class="rank-value">50 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Hero</div>
+              <div class="rank-value">100 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Reaper</div>
+              <div class="rank-value">500 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Saiyan</div>
+              <div class="rank-value">1,000 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Sin</div>
+              <div class="rank-value">2,500 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Magi</div>
+              <div class="rank-value">10,000 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Akuma</div>
+              <div class="rank-value">45,000 coins/min</div>
+            </div>
+            <div class="rank-item">
+              <div class="rank-name">Yonko</div>
+              <div class="rank-value">100,000 coins/min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = Math.floor(window.innerWidth / 20);
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = Math.random() * 5 + 2;
+          const posX = Math.random() * window.innerWidth;
+          const posY = Math.random() * window.innerHeight;
+          const duration = Math.random() * 30 + 20;
+          const delay = Math.random() * 5;
+          
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${posX}px`;
+          particle.style.top = `${posY}px`;
+          particle.style.animationDuration = `${duration}s`;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const colors = ['var(--primary)', 'var(--accent)', 'var(--secondary)'];
+          particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+      
+      createParticles();
+
+      
+      const tabButtons = document.querySelectorAll('.nav-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          
+          
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          
+          
+          tabContents.forEach(content => content.classList.remove('active'));
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+
+      
+      const ticksPerMinute = {
+        strength: 50,
+        defense: 36,
+        chakra: 26,
+        sword: 47,
+      };
+
+      
+      const ranks = [
+        { name: "Fighter", coinPerMinute: 5 },
+        { name: "Shinobi", coinPerMinute: 10 },
+        { name: "Pirate", coinPerMinute: 25 },
+        { name: "Ghoul", coinPerMinute: 50 },
+        { name: "Hero", coinPerMinute: 100 },
+        { name: "Reaper", coinPerMinute: 500 },
+        { name: "Saiyan", coinPerMinute: 1000 },
+        { name: "Sin", coinPerMinute: 2500 },
+        { name: "Magi", coinPerMinute: 10000 },
+        { name: "Akuma", coinPerMinute: 45000 },
+        { name: "Yonko", coinPerMinute: 100000 }
+      ];
+
+      
+      function parseNumberWithSuffix(input) {
+        if (!input) return NaN;
+        if (/^[0-9.]+e[0-9]+$/i.test(input)) return parseFloat(input);
+        input = input.toString().trim().toLowerCase();
+        
+        const suffixes = {
+          'k': 1e3, 'm': 1e6, 'b': 1e9, 't': 1e12
+        };
+        
+        let suffix = '';
+        let numberPart = input;
+        
+        for (const s in suffixes) {
+          if (input.endsWith(s)) {
+            suffix = s;
+            numberPart = input.substring(0, input.length - s.length);
+            break;
+          }
+        }
+        
+        const number = parseFloat(numberPart);
+        return isNaN(number) ? NaN : suffix ? number * suffixes[suffix] : number;
+      }
+
+      function abbreviateNumber(num) {
+        if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+        if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+        return num.toString();
+      }
+
+      function formatTime(minutes) {
+        if (minutes < 60) return `${minutes.toFixed(1)} minutes`;
+        const hours = minutes / 60;
+        if (hours < 24) return `${hours.toFixed(1)} hours`;
+        const days = hours / 24;
+        return `${days.toFixed(1)} days`;
+      }
+
+      
+      function calculateGains() {
+        const statType = document.getElementById("statType").value;
+        const gainPerSecond = parseNumberWithSuffix(document.getElementById("gainPerTick").value);
+        const time = parseFloat(document.getElementById("time").value);
+        const multiplier = parseFloat(document.getElementById("multiplier").value) || 1;
+
+        if (isNaN(gainPerSecond)) {
+          document.getElementById("result").innerHTML = `<div class="result-item" style="color:var(--error)">Please enter a valid gain per second</div>`;
+          return;
+        }
+
+        if (isNaN(time) || time <= 0) {
+          document.getElementById("result").innerHTML = `<div class="result-item" style="color:var(--error)">Please enter a valid time</div>`;
+          return;
+        }
+
+        if (isNaN(multiplier) || multiplier < 1) {
+          document.getElementById("result").innerHTML = `<div class="result-item" style="color:var(--error)">Please enter a valid multiplier</div>`;
+          return;
+        }
+
+        const ticks = ticksPerMinute[statType] * time * speedMultiplier;
+        const totalGain = gainPerSecond * 60 * time * multiplier * speedMultiplier;
+
+        document.getElementById("result").innerHTML = `
+          <div class="result-item">
+            <span class="result-label">Training Type:</span>
+            <span class="result-value">${statType.charAt(0).toUpperCase()+statType.slice(1)}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Multiplier:</span>
+            <span class="result-value">${multiplier}x</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Time:</span>
+            <span class="result-value">${time} minutes</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Gain Per Second:</span>
+            <span class="result-value">${abbreviateNumber(gainPerSecond)}</span>
+          </div>
+          <div class="result-item" style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+            <span class="result-label" style="font-weight:700">Total Gain:</span>
+            <span class="result-value" style="font-weight:700">${abbreviateNumber(totalGain)}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Gain Per Minute:</span>
+            <span class="result-value">${abbreviateNumber(totalGain / time)}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Gain Per Hour:</span>
+            <span class="result-value">${abbreviateNumber(totalGain / time * 60)}</span>
+          </div>
+        `;
+      }
+
+      
+      function calculateCoins() {
+        const selectedRankIndex = parseInt(document.getElementById("rankSelect").value);
+        const selectedRank = ranks[selectedRankIndex];
+        const doubleCoins = document.getElementById("doubleCoins").checked;
+        const timeInput = document.getElementById("coinTimeInput").value;
+        const time = parseInt(timeInput);
+
+        if (!timeInput || isNaN(time) || time <= 0) {
+          document.getElementById("coinResult").innerHTML = `
+            <div class="result-item">
+              <span style="color: var(--error);">Please enter a valid time</span>
+            </div>
+          `;
+          return;
+        }
+
+        let coinsPerMinute = selectedRank.coinPerMinute;
+        let bonuses = [];
+
+        if (doubleCoins) {
+          coinsPerMinute *= 2;
+          bonuses.push("2x Gamepass");
+        }
+
+        const totalCoins = coinsPerMinute * time;
+        const formattedCPM = abbreviateNumber(coinsPerMinute);
+        const formattedTotal = abbreviateNumber(totalCoins);
+
+        let resultHTML = `
+          <div class="result-item">
+            <span class="result-label">Rank:</span>
+            <span class="result-value">${selectedRank.name}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Base Coins/Min:</span>
+            <span class="result-value">${abbreviateNumber(selectedRank.coinPerMinute)}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Effective Coins/Min:</span>
+            <span class="result-value">${formattedCPM}</span>
+          </div>
+        `;
+
+        if (bonuses.length > 0) {
+          resultHTML += `
+            <div class="result-item">
+              <span class="result-label">Active Bonuses:</span>
+              <span class="result-value">${bonuses.join(" + ")}</span>
+            </div>
+          `;
+        }
+
+        resultHTML += `
+          <div class="result-item">
+            <span class="result-label">Time:</span>
+            <span class="result-value">${time} minutes</span>
+          </div>
+          <div class="result-item" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 10px;">
+            <span class="result-label" style="font-size: 1.1em;">Total Earnings:</span>
+            <span class="result-value" style="font-size: 1.1em;">${formattedTotal}</span>
+          </div>
+        `;
+
+        document.getElementById("coinResult").innerHTML = resultHTML;
+      }
+
+      
+      document.getElementById("calculateBtn").addEventListener("click", calculateGains);
+      document.getElementById("calculateCoinsBtn").addEventListener("click", calculateCoins);
+      
+      
+      const inputs = [
+        "gainPerTick", "time", "multiplier", "coinTimeInput"
+      ];
+      
+      inputs.forEach(id => {
+        document.getElementById(id).addEventListener("keypress", function(e) {
+          if (e.key === "Enter") {
+            if (id === "coinTimeInput") {
+              calculateCoins();
+            } else {
+              calculateGains();
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
