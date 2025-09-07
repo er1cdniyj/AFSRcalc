@@ -47,35 +47,57 @@
       overflow-x: hidden;
     }
     
-    .bg-anime {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.15;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(255, 123, 37, 0.4) 0%, transparent 20%),
-        radial-gradient(circle at 90% 70%, rgba(58, 134, 255, 0.4) 0%, transparent 20%),
-        radial-gradient(circle at 50% 30%, rgba(255, 77, 41, 0.3) 0%, transparent 30%);
-      animation: pulseBackground 15s ease infinite;
-    }
+.bg-anime {
+  min-height: 100vh; /* Ensure it covers full viewport height */
+  width: 100vw; /* Ensure it covers full viewport width */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.15;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 123, 37, 0.4) 0%, transparent 20%),
+    radial-gradient(circle at 90% 70%, rgba(58, 134, 255, 0.4) 0%, transparent 20%),
+    radial-gradient(circle at 50% 30%, rgba(255, 77, 41, 0.3) 0%, transparent 30%);
+  animation: pulseBackground 15s ease infinite;
+}
+
+
+@media (max-width: 768px) {
+  .bg-anime {
+    background: 
+      radial-gradient(circle at 10% 15%, rgba(255, 123, 37, 0.4) 0%, transparent 25%),
+      radial-gradient(circle at 90% 80%, rgba(58, 134, 255, 0.4) 0%, transparent 25%),
+      radial-gradient(circle at 50% 25%, rgba(255, 77, 41, 0.3) 0%, transparent 35%);
+  }
+}
     
     @keyframes pulseBackground {
       0%, 100% { opacity: 0.1; }
       50% { opacity: 0.2; }
     }
     
-    .bg-particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      overflow: hidden;
-    }
+.bg-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; 
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
+}
+
+
+@media (max-width: 768px) {
+  .particle {
+    width: 3px !important;
+    height: 3px !important;
+  }
+  
+  @keyframes float {
+    to { transform: translateY(-100vh) translateX(10vw); }
+  }
+}
     
     .particle {
       position: absolute;
@@ -667,34 +689,40 @@
     document.addEventListener('DOMContentLoaded', function() {
       
       function createParticles() {
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = Math.floor(window.innerWidth / 15);
-        
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('particle');
-          
-          const size = Math.random() * 4 + 1;
-          const posX = Math.random() * window.innerWidth;
-          const posY = Math.random() * window.innerHeight;
-          const duration = Math.random() * 30 + 20;
-          const delay = Math.random() * 5;
-          
-          particle.style.width = `${size}px`;
-          particle.style.height = `${size}px`;
-          particle.style.left = `${posX}px`;
-          particle.style.top = `${posY}px`;
-          particle.style.animationDuration = `${duration}s`;
-          particle.style.animationDelay = `${delay}s`;
-          
-          const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)'];
-          particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-          
-          particlesContainer.appendChild(particle);
-        }
-      }
-      
-      createParticles();
+  const particlesContainer = document.getElementById('particles');
+  // Use window.innerWidth for proper mobile calculation
+  const particleCount = Math.floor(window.innerWidth / 10); // Increased density for mobile
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    const size = Math.random() * 3 + 1; // Smaller particles for mobile
+    const posX = Math.random() * window.innerWidth; // Use window width
+    const posY = Math.random() * window.innerHeight; // Use window height
+    const duration = Math.random() * 30 + 20;
+    const delay = Math.random() * 5;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${posX}px`;
+    particle.style.top = `${posY}px`;
+    particle.style.animationDuration = `${duration}s`;
+    particle.style.animationDelay = `${delay}s`;
+    
+    const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)'];
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// Add resize listener to regenerate particles on orientation change
+window.addEventListener('resize', function() {
+  const particles = document.querySelectorAll('.particle');
+  particles.forEach(particle => particle.remove());
+  createParticles();
+});
 
       // Hub navigation
       const hubCards = document.querySelectorAll('.hub-card');
