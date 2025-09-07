@@ -562,28 +562,18 @@
         <div class="form-group">
           <label for="rankSelect" class="form-label">Select Rank</label>
           <select id="rankSelect" class="form-select">
-            <option value="0">Rookie</option>
-            <option value="1">Ninja</option>
+            <option value="0">Fighter</option>
+            <option value="1">Shinobi</option>
             <option value="2">Pirate</option>
             <option value="3">Ghoul</option>
             <option value="4">Hero</option>
             <option value="5">Reaper</option>
             <option value="6">Warrior</option>
-            <option value="7">Sin</option>
-            <option value="8">Mage</option>
-            <option value="9">Demon</option>
-            <option value="10">Emperor</option>
-            <option value="11">Elder</option>
-            <option value="12">Overlord</option>
-            <option value="13">Leader</option>
-            <option value="14">Deity</option>
-            <option value="15">Sage</option>
-            <option value="16">Mask</option>
-            <option value="17">Shinigami</option>
-            <option value="18">Hashira</option>
-            <option value="19">Destroyer</option>
-            <option value="20">Otsutsuki</option>
-            <option value="21">Pirate King</option>
+            <option value="7">Saiyan</option>
+            <option value="8">Sin</option>
+            <option value="9">Magi</option>
+            <option value="10">Akuma</option>
+            <option value="11">Yonko</option>
           </select>
         </div>
         <div class="form-group">
@@ -600,10 +590,6 @@
           <label class="checkbox-label">
             <input type="checkbox" id="doubleCoins" class="checkbox-input">
             2x Coins Gamepass
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="goldCompanion" class="checkbox-input">
-            Gold Companion (+20%)
           </label>
         </div>
       </div>
@@ -677,37 +663,26 @@
 
       // Stats calculator functionality
       const ticksPerMinute = {
-        strength: 55,
-        energy: 28,
+        strength: 51,
+        energy: 26,
         defense: 36,
-        sword: 55
+        sword: 47
       };
       const companionTicksPerMinute = 10;
 
-      // Coin calculator functionality
+
       const ranks = [
-        { name: "Rookie", coinPerMinute: 5 },
-        { name: "Ninja", coinPerMinute: 10 },
+        { name: "Fighter", coinPerMinute: 5 },
+        { name: "Shinobi", coinPerMinute: 10 },
         { name: "Pirate", coinPerMinute: 25 },
         { name: "Ghoul", coinPerMinute: 50 },
         { name: "Hero", coinPerMinute: 100 },
-        { name: "Reaper", coinPerMinute: 250 },
-        { name: "Warrior", coinPerMinute: 500 },
-        { name: "Sin", coinPerMinute: 1000 },
-        { name: "Mage", coinPerMinute: 5000 },
-        { name: "Demon", coinPerMinute: 10000 },
-        { name: "Emperor", coinPerMinute: 50000 },
-        { name: "Elder", coinPerMinute: 100000 },
-        { name: "Overlord", coinPerMinute: 500000 },
-        { name: "Leader", coinPerMinute: 1000000 },
-        { name: "Deity", coinPerMinute: 5000000 },
-        { name: "Sage", coinPerMinute: 10000000 },
-        { name: "Mask", coinPerMinute: 50000000 },
-        { name: "Shinigami", coinPerMinute: 100000000 },
-        { name: "Hashira", coinPerMinute: 500000000 },
-        { name: "Destroyer", coinPerMinute: 1000000000 },
-        { name: "Otsutsuki", coinPerMinute: 5000000000 },
-        { name: "Pirate King", coinPerMinute: 10000000000 }
+        { name: "Reaper", coinPerMinute: 500 },
+        { name: "Saiyan", coinPerMinute: 1000 },
+        { name: "Sin", coinPerMinute: 2500 },
+        { name: "Magi", coinPerMinute: 10000 },
+        { name: "Akuma", coinPerMinute: 50000 },
+        { name: "Yonko", coinPerMinute: 100000 },
       ];
 
       function parseNumberWithSuffix(input) {
@@ -848,10 +823,6 @@
           bonuses.push("2x Gamepass");
         }
 
-        if (goldCompanion) {
-          coinsPerMinute *= 1.2;
-          bonuses.push("Gold Companion");
-        }
 
         const totalCoins = coinsPerMinute * time;
         const formattedCPM = abbreviateNumber(coinsPerMinute);
